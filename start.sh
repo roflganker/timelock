@@ -1,0 +1,25 @@
+#!/bin/sh
+
+. ./common.sh
+
+if [ -f $stampfile ] && [ -s $stampfile ]; then
+  oldmsg="$(cat $msgfile)";
+  oldstamp="$(cat $stampfile)";
+  olddate="$(date -u --date=@$oldstamp)"
+  
+  echo "Error: already working on $oldmsg since $olddate" >&2;
+  return $ERR_ALREADY_RUNNING;
+fi
+
+usage="$0 <message>";
+message="$@";
+while [ -z "$message" ]; do
+  echo -n "What are you working on? " >&2;
+  read message;
+done
+
+timestamp="$(date -u +%s)"
+echo $timestamp > $stampfile
+echo $message > $msgfile
+echo "You started working on $message" >&2;
+
