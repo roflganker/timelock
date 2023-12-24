@@ -9,7 +9,7 @@ fi
 
 oldmsg="$(cat $msgfile)";
 oldstamp="$(cat $stampfile)";
-curstamp="$(date -u +%s)";
+curstamp="$(date +%s)";
 timediff="$(expr $curstamp - $oldstamp)"
 
 echo "You worked on $oldmsg for $(seconds_to_hm $timediff)" >&2;

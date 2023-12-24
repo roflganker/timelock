@@ -5,7 +5,7 @@
 if [ -f $stampfile ] && [ -s $stampfile ]; then
   oldmsg="$(cat $msgfile)";
   oldstamp="$(cat $stampfile)";
-  olddate="$(date -u --date=@$oldstamp)"
+  olddate="$(date --date=@$oldstamp)"
   
   echo "Error: already working on $oldmsg since $olddate" >&2;
   return $ERR_ALREADY_RUNNING;
@@ -17,7 +17,7 @@ while [ -z "$message" ]; do
   read message;
 done
 
-timestamp="$(date -u +%s)"
+timestamp="$(date +%s)"
 echo $timestamp > $stampfile
 echo $message > $msgfile
 echo "You started working on $message" >&2;
