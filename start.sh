@@ -11,8 +11,7 @@ if [ -f $stampfile ] && [ -s $stampfile ]; then
   return $ERR_ALREADY_RUNNING;
 fi
 
-usage="$0 <message>";
-message="$@";
+message=""
 while [ -z "$message" ]; do
   echo -n "What are you working on? " >&2;
   read message;
