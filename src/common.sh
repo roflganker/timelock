@@ -1,11 +1,11 @@
 #!/bin/sh
 
-if [ -z "$HOME" ]; then
+if [ -z "$HOME" ] || [ ! -d "$HOME" ]; then
   echo "You're homeless :)" >&2;
   return 1;
 fi;
 
-homedir="$HOME/.timetrack"
+homedir="$HOME/.timelock"
 [ ! -d "$homedir" ] && mkdir "$homedir";
 
 stampfile="$homedir/time"
