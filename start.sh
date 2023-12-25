@@ -8,7 +8,7 @@ if [ -f $stampfile ] && [ -s $stampfile ]; then
   olddate="$(date --date=@$oldstamp)"
   
   echo "Error: already working on $oldmsg since $olddate" >&2;
-  return $ERR_ALREADY_RUNNING;
+  return 1;
 fi
 
 message=""

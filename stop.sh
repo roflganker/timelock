@@ -4,7 +4,7 @@
 
 if [ ! -f $stampfile ] || [ ! -s $stampfile ]; then
   echo "Error: currently not working on anything" >&2;
-  return $ERR_NOT_WORKING;
+  return 1;
 fi
 
 message="$(cat $msgfile)"

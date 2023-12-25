@@ -1,11 +1,8 @@
 #!/bin/sh
 
-ERR_BAD_DIRECTORY=1
-ERR_NOT_WORKING=2
-
 if [ -z "$HOME" ]; then
   echo "You're homeless :)" >&2;
-  return $ERR_BAD_DIRECTORY;
+  return 1;
 fi;
 
 homedir="$HOME/.timetrack"
