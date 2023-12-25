@@ -10,18 +10,23 @@ Use these scripts on your own risk.
 ## Installation
 
 ```shell
-# In progress...
+git clone https://github.com/roflganker/timetrack.sh.git
+cd timetrack.sh
+chmod +x ./install.sh
+
+# Switch to superuser here, or run with sudo
+./install.sh
 ```
 
 
 ## Usage
 
 ```shell
-./tt.sh start  # Start working
-./tt.sh status  # Get currect work status  
-./tt.sh stop  # Stop working and track time
-./tt.sh rotate  # Track time and switch to another task
-./tt.sh history  # Get history (for now, use grep for filtering)
+tt start  # Start working
+tt status  # Get currect work status  
+tt stop  # Stop working and track time
+tt rotate  # Track time and switch to another task
+tt history  # Get history (for now, use grep for filtering)
 ```
 
 
@@ -29,7 +34,6 @@ Use these scripts on your own risk.
 
 - History filters
 - Unit/e2e test coverage
-- Compatilibity tests for `bash`, `ash`, `zsh`, etc...
-- Installation script, linking somewhere to $PATH
+- Compatibility tests for `bash`, `ash`, `zsh`, etc...
 - Integration with team services: Jira, Redmine... (maybe)
 
