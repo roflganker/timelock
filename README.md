@@ -17,7 +17,8 @@ It also don't require Internet and frees you from ineracting with GUI.
 
 ```shell
 git clone https://github.com/roflganker/timelock.git
-sh timelock/install.sh  # Run this as superuser
+sh timelock/install.sh  # Run this as superuser (sudo)
+rm -rf timelock  # Remove source code (optionally)
 ```
 
 
