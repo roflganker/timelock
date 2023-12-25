@@ -9,8 +9,9 @@ Use these scripts on your own risk.
 
 # Rationale
 
-This tool needed to track working hours without signing in with Google, X, or smth..
-It also don't require Internet and frees you from ineracting with GUI.
+This tool needed to track working hours without signing in with Google,
+X, or smth.. It also don't require Internet and frees you from ineracting
+with poorly organized GUI.
 
 
 ## Installation
