@@ -10,13 +10,15 @@ fi
 
 if [ "$option" = "common" ] || [ "$option" = "tl" ]; then
   echo "Invalid option. Usage: $usage" >&2
+  echo "Hint: type 'tl help'" >&2
   return 1
 fi
 
 cd $(dirname $(readlink -f $0))
 script="./${option}.sh"
 if [ ! -f "$script" ]; then
-  echo "No such $0 option: $option" >&2
+  echo "No such option: $option" >&2
+  echo "Hint: type 'tl help'" >&2
   return 1;
 fi
 
