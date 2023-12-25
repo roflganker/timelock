@@ -23,15 +23,13 @@ fi
 
 scriptdir=$(dirname $(readlink -f $0))
 srcdir="$scriptdir/src"
-mainscript="tl.sh"
-entrypoint="$srcdir/$mainscript"
 dist="/usr/src/timelock"
 [ -d $dist ] && rm -rf $dist
 
 mkdir $dist 
 cp -r $srcdir/* $dist
 chmod -R 755 $dist
-ln -fs $dist/$mainscript /usr/local/bin/$executable
+ln -fs $dist/tl.sh /usr/local/bin/$executable
 
 if which $executable > /dev/null; then
   echo "Installation complete!" >&2
