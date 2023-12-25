@@ -8,6 +8,11 @@ if [ -z "$option" ]; then
   return 1
 fi
 
+if [ "$option" = "common" ] || [ "$option" = "tl" ]; then
+  echo "Invalid option. Usage: $usage" >&2
+  return 1
+fi
+
 cd $(dirname $(readlink -f $0))
 script="./${option}.sh"
 if [ ! -f "$script" ]; then
