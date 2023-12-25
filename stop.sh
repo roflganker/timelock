@@ -7,12 +7,16 @@ if [ ! -f $stampfile ] || [ ! -s $stampfile ]; then
   return $ERR_NOT_WORKING;
 fi
 
-oldmsg="$(cat $msgfile)";
-oldstamp="$(cat $stampfile)";
-curstamp="$(date +%s)";
-timediff="$(expr $curstamp - $oldstamp)"
+message="$(cat $msgfile)"
+starttime="$(cat $stampfile)"
+curtime="$(date +%s)"
+timediff="$(expr $curtime - $starttime)"
+humantime="$(seconds_to_hm $timediff)"
 
-echo "You worked on $oldmsg for $(seconds_to_hm $timediff)" >&2;
+echo "You worked on $message for $humantime" >&2;
 rm $stampfile
 rm $msgfile
+
+histentry="$starttime $curtime $message"
+echo "$histentry" >> $histfile
 

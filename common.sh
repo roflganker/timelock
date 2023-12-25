@@ -13,6 +13,7 @@ homedir="$HOME/.timetrack"
 
 stampfile="$homedir/time"
 msgfile="$homedir/msg"
+histfile="$homedir/history"
 
 seconds_to_hm() {
   local usage="seconds_to_hm <seconds>";
