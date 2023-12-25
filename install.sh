@@ -7,7 +7,7 @@ if [ "$(id -u)" != "0" ]; then
   return 1
 fi
 
-executable="tt"
+executable="tl"
 found="$(which $executable)"
 if [ -n "$found" ] && [ -f "$found" ] && [ -x "$found" ]; then
   answer=""
@@ -21,24 +21,17 @@ if [ -n "$found" ] && [ -f "$found" ] && [ -x "$found" ]; then
   done
 fi
 
-srcdir="./src"
-entrypoint="$srcdir/tt.sh"
-if [ ! -d $srcdir ] || [ ! -f $entrypoint ] || [ ! -s $entrypoint ]; then
-  echo "Please run $0 from project root" >&2
-  return 1
-fi
- 
-destination="/usr/src/timetrack.sh"
-[ -d $destination ] && rm -rf $destination
+scriptdir=$(dirname $(readlink -f $0))
+srcdir="$scriptdir/src"
+mainscript="tl.sh"
+entrypoint="$srcdir/$mainscript"
+dist="/usr/src/timelock"
+[ -d $dist ] && rm -rf $dist
 
-mkdir $destination
-cp -r $srcdir/* $destination
-chmod -R 755 $destination
-
-installdir="/usr/local/bin"
-linkname="$installdir/$executable"
-linktarget="$destination/tt.sh"
-ln -fs $linktarget $linkname
+mkdir $dist 
+cp -r $srcdir/* $dist
+chmod -R 755 $dist
+ln -fs $dist/$mainscript /usr/local/bin/$executable
 
 if which $executable > /dev/null; then
   echo "Installation complete!" >&2
