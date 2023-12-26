@@ -8,7 +8,7 @@ if [ -f $stampfile ] && [ -s $stampfile ]; then
   curtime="$(date +%s)";
   timediff="$(expr $curtime - $starttime)"
 
-  echo "Working on $message for $(seconds_to_hm $timediff)" >&2;  
+  echo "Working on $message for $(seconds_to_hms $timediff)" >&2;  
 else
   echo "Not working at the moment" >&2;
 fi

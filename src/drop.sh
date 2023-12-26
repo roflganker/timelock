@@ -11,7 +11,7 @@ message="$(cat $msgfile)"
 starttime="$(cat $stampfile)"
 curtime="$(date +%s)"
 timediff="$(expr $curtime - $starttime)"
-humantime="$(seconds_to_hm $timediff)"
+humantime="$(seconds_to_hms $timediff)"
 
 conf=""
 while [ -z "$conf" ]; do

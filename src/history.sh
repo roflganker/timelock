@@ -10,7 +10,7 @@ humanize_history() {
   while IFS=' ' read starttime endtime message; do
     startdate="$(date --date=@$starttime)";
     timediff="$(expr $endtime - $starttime)";
-    humantime="$(seconds_to_hm $timediff)";
+    humantime="$(seconds_to_hms $timediff)";
     
     echo "$startdate: $message ($humantime)"
   done
