@@ -11,13 +11,13 @@ if [ -f $stampfile ] && [ -s $stampfile ]; then
   return 1;
 fi
 
+timestamp="$(date +%s)"
 subject=""
 while [ -z "$subject" ]; do
   echo -n "What are you working on? " >&2;
   read subject;
 done
 
-timestamp="$(date +%s)"
 echo $timestamp > $stampfile
 echo $subject > $subjfile
 echo "You started working on $subject" >&2;
