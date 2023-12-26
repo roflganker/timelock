@@ -1,0 +1,10 @@
+Usage: tl <option> [args]
+  tl start - start working unit
+  tl status - get currrent work and time
+  tl stop - stop working unit and track time
+  tl drop - dismiss current work; forget timestamp
+  tl rotate - track time and switch task
+  tl history - get work history
+
+  tl help - get help message
+  tl help <command> - get help on certain command

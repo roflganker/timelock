@@ -1,25 +1,23 @@
 #!/bin/sh
 
-usage="tl <option>";
-
-option="$1";
+option="$1"
+fallback="help"
 if [ -z "$option" ]; then
-  echo "Missing option. Usage: $usage" >&2
-  return 1
+  echo "Error: missing option" >&2
+  option=$fallback
 fi
 
 if [ "$option" = "common" ] || [ "$option" = "tl" ]; then
-  echo "Invalid option. Usage: $usage" >&2
-  echo "Hint: type 'tl help'" >&2
-  return 1
+  echo "Error: invalid option '$option'" >&2
+  option=$fallback
 fi
 
 cd $(dirname $(readlink -f $0))
 script="./${option}.sh"
 if [ ! -f "$script" ]; then
-  echo "No such option: $option" >&2
-  echo "Hint: type 'tl help'" >&2
-  return 1;
+  echo "Error: no such option '$option'" >&2
+  option=$fallback
+  script="./${option}.sh"
 fi
 
 if [ ! -s "$script" ] || [ ! -x "$script" ]; then

@@ -28,8 +28,9 @@ dist="/usr/src/timelock"
 
 mkdir $dist 
 cp -r $srcdir/* $dist
-chmod -R 755 $dist
-ln -fs $dist/tl.sh /usr/local/bin/$executable
+entrypoint=$dist/main.sh
+chmod +x $entrypoint
+ln -fs $entrypoint /usr/local/bin/$executable
 
 if which $executable > /dev/null; then
   echo "Installation complete!" >&2
