@@ -7,16 +7,16 @@ if [ ! -f $stampfile ] || [ ! -s $stampfile ]; then
   return 1;
 fi
 
-message="$(cat $msgfile)"
+subject="$(cat $subjfile)"
 starttime="$(cat $stampfile)"
 curtime="$(date +%s)"
 timediff="$(expr $curtime - $starttime)"
 humantime="$(seconds_to_hms $timediff)"
 
-echo "You worked on $message for $humantime" >&2;
+echo "You worked on $subject for $humantime" >&2;
 rm $stampfile
-rm $msgfile
+rm $subjfile
 
-histentry="$starttime $curtime $message"
+histentry="$starttime $curtime $subject"
 echo "$histentry" >> $histfile
 

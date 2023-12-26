@@ -3,14 +3,21 @@
 if [ -z "$HOME" ] || [ ! -d "$HOME" ]; then
   echo "You're homeless :)" >&2;
   return 1;
-fi;
+fi
 
 homedir="$HOME/.timelock"
-[ ! -d "$homedir" ] && mkdir "$homedir";
+if [ ! -d "$homedir" ]; then
+  mkdir $homedir;
+fi
 
 stampfile="$homedir/time"
-msgfile="$homedir/msg"
+subjfile="$homedir/subj"
 histfile="$homedir/history"
+
+# Migration from .timelock/message to .timelock/subj
+if [ -f "$homedir/message" ] && [ ! -f $subjfile ]; then
+  mv "$homedir/message" $subjfile
+fi
 
 seconds_to_hms() {
   local usage="seconds_to_hms <seconds>";

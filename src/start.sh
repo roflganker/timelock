@@ -3,22 +3,22 @@
 . ./common.sh
 
 if [ -f $stampfile ] && [ -s $stampfile ]; then
-  oldmsg="$(cat $msgfile)";
+  oldsubj="$(cat $subjfile)";
   oldstamp="$(cat $stampfile)";
   olddate="$(date --date=@$oldstamp)"
   
-  echo "Error: already working on $oldmsg since $olddate" >&2;
+  echo "Error: already working on $oldsubj since $olddate" >&2;
   return 1;
 fi
 
-message=""
-while [ -z "$message" ]; do
+subject=""
+while [ -z "$subject" ]; do
   echo -n "What are you working on? " >&2;
-  read message;
+  read subject;
 done
 
 timestamp="$(date +%s)"
 echo $timestamp > $stampfile
-echo $message > $msgfile
-echo "You started working on $message" >&2;
+echo $subject > $subjfile
+echo "You started working on $subject" >&2;
 

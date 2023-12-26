@@ -5,14 +5,14 @@
 humanize_history() {
   local starttime;
   local endtime;
-  local message;
+  local subject;
 
-  while IFS=' ' read starttime endtime message; do
+  while IFS=' ' read starttime endtime subject; do
     startdate="$(date --date=@$starttime)";
     timediff="$(expr $endtime - $starttime)";
     humantime="$(seconds_to_hms $timediff)";
     
-    echo "$startdate: $message ($humantime)"
+    echo "$startdate: $subject ($humantime)"
   done
 }
 
