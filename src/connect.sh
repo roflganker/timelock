@@ -1,19 +1,28 @@
 #!/bin/sh
 
-usage="$0 <service>";
+. ./common.sh
 
-service="$1"
-if [ -z "$service" ]; then
-  echo "Missing service. Usage: $usage" >&2;
-  return 1;
-fi
+baseurl=""
+email=""
+apikey=""
 
-scriptdir="./svc/$service"
-script="$scriptdir/install.sh"
-if [ ! -d $scriptdir ] || [ ! -f $script ]; then
-  echo "Connection with $service is not implemented" >&2;
-  return 1;
-fi
+while [ -z "$email" ]; do
+  echo -n "Who are you? (email on Atlassian) " >&2;
+  read email
+done
 
-$script;
+while [ -z "$baseurl" ]; do
+  echo -n "Enter base URL of your Jira instance: " >&2;
+  read baseurl
+done
+
+while [ -z "$apikey" ]; do
+  echo -n "Your personal API token? " >&2;
+  oldstty="$(stty -g)"
+  stty -echo
+  read apikey
+  stty $oldstty
+done
+
+# TODO persit things
 
