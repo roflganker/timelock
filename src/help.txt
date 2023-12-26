@@ -5,6 +5,7 @@ Usage: tl <option> [args]
   tl drop - dismiss current work; forget timestamp
   tl rotate - track time and switch task
   tl history - get work history
+  tl connect <service> - connect a time tracking service
 
   tl help - get help message
   tl help <command> - get help on certain command

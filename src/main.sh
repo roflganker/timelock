@@ -7,7 +7,7 @@ if [ -z "$option" ]; then
   option=$fallback
 fi
 
-if [ "$option" = "common" ] || [ "$option" = "tl" ]; then
+if [ "$option" = "common" ] || [ "$option" = "main" ]; then
   echo "Error: invalid option '$option'" >&2
   option=$fallback
 fi
@@ -25,5 +25,6 @@ if [ ! -s "$script" ] || [ ! -x "$script" ]; then
   return 1;
 fi
 
-$script
+shift
+$script "$@"
 
