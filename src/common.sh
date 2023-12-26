@@ -14,9 +14,9 @@ stampfile="$homedir/time"
 subjfile="$homedir/subj"
 histfile="$homedir/history"
 
-# Migration from .timelock/message to .timelock/subj
-if [ -f "$homedir/message" ] && [ ! -f $subjfile ]; then
-  mv "$homedir/message" $subjfile
+# Migration from .timelock/msg to .timelock/subj
+if [ -f "$homedir/msg" ] && [ ! -f $subjfile ]; then
+  mv "$homedir/msg" $subjfile
 fi
 
 seconds_to_hms() {

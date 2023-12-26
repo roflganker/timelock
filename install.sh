@@ -7,17 +7,28 @@ if [ "$(id -u)" != "0" ]; then
   return 1
 fi
 
+abort() {
+  echo "$@" >&2
+  exit 1
+}
+
+forceinstall="n"
 executable="tl"
+
+while getopts ':x:f' opt; do
+  case "$opt" in
+    f) forceinstall="y" ;;
+    x) executable="$OPTARG" ;;
+    ?) abort "Invalid option: -${OPTARG}" ;;
+  esac
+done
+
 found="$(which $executable)"
 if [ -n "$found" ] && [ -f "$found" ] && [ -x "$found" ]; then
-  answer=""
-  while [ -z "$answer" ]; do
-    echo -n "Already installed at $found. Reinstall? Y/N "
-    read answer
-    if [ "$answer" = "N" ] || [ "$answer" = "n" ]; then
-      echo "Ok. Aborting" >&2
-      return 1
-    fi
+  while [ "$forceinstall" != "y" ]; do
+    echo -n "Already installed at $found. Reinstall? y/n "
+    read forceinstall
+    [ "$forceinstall" = "n" ] && abort "Ok. Aborting" 
   done
 fi
 
@@ -30,12 +41,7 @@ mkdir $dist
 cp -r $srcdir/* $dist
 entrypoint=$dist/main.sh
 chmod +x $entrypoint
-ln -fs $entrypoint /usr/local/bin/$executable
-
-if which $executable > /dev/null; then
-  echo "Installation complete!" >&2
-else
-  echo "Installation failed :(" >&2
-  return 1
-fi
+linkname="/usr/local/bin/$executable"
+ln -fs $entrypoint $linkname
+echo "Done. Linked to $linkname" >&2
 
