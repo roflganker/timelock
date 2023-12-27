@@ -3,8 +3,8 @@
 
 ## Disclaimer
 
-I'm just learning shell scripting, don't judge strictly :)
-Use these scripts on your own risk.
+I'm learning shell scripting and this is my pet project.
+Don't judge strictly :) Use these scripts on your own risk.
 
 
 # Rationale
@@ -29,6 +29,7 @@ rm -rf timelock  # Remove source code (optionally)
 tl start  # Start working
 tl status  # Get currect work status  
 tl stop  # Stop working and track time
+tl drop  # Erase current work unit
 tl rotate  # Track time and switch to another task
 tl history  # Get history (for now, use grep for filtering)
 ```
@@ -39,5 +40,12 @@ tl history  # Get history (for now, use grep for filtering)
 - History filters
 - Unit/e2e test coverage
 - Compatibility tests for `bash`, `ash`, `zsh`, etc...
-- Integration with team services: Jira, Redmine... (maybe)
+- Integration with Jira
+- Use Makefile for linting and installation
+
+
+### Involved dev tools
+
+- 🏗️ Code analyzer -> [shellcheck](https://github.com/koalaman/shellcheck)
+- 👗 Formatting utility -> [shfmt](https://github.com/mvdan/sh)
 
