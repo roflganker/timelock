@@ -2,49 +2,23 @@
 
 . ./common.sh
 
-jiradir=$homedir/jira
-if [ -d $jiradir ]; then
-  reinstall="n"
-  while [ "$reinstall" != "y" ]; do
-    echo -n "Jira is connected already. Reinstall? y/n "
-    read reinstall;
-    if [ "$reinstall" = "n" ]; then
-      echo "Ok. Aborting" >&2
-      return 1
-    fi
-  done
-  rm -rf $jiradir
-  echo "Old Jira connection was erased" >&2
+jiradir="$(tl_homedir)/jira"
+if [ -d "$jiradir" ]; then
+  if [ -f "$jiradir/email" ] && [ -r "$jiradir/email" ]; then
+    email="$(cat "$jiradir/email")"
+  else
+    email='no email'
+  fi
+
+  confirm "Jira is connected already ($email). Reinstall?"
+  rm -rf "$jiradir"
 fi
 
-baseurl=""
-email=""
-apikey=""
+mkdir "$jiradir"
+ask_line 'Who are you? (email on Altassian)' > "$jiradir/email"
+ask_line 'Base URL of your Jira instance?' > "$jiradir/baseurl"
+ask_secret 'Your personal API token?' > "$jiradir/apikey"
+chmod 600 "$jiradir/apikey"
 
-while [ -z "$email" ]; do
-  echo -n "Who are you? (email on Atlassian) " >&2;
-  read email
-done
-
-while [ -z "$baseurl" ]; do
-  echo -n "Enter base URL of your Jira instance: " >&2;
-  read baseurl
-done
-
-while [ -z "$apikey" ]; do
-  echo -n "Your personal API token? " >&2;
-  oldstty="$(stty -g)"
-  stty -echo
-  read apikey
-  stty $oldstty
-done
-
-mkdir $jiradir
-echo $baseurl > $jiradir/baseurl
-echo $email > $jiradir/email
-echo $apikey > $jiradir/apikey
-
-chmod 600 $jiradir/apikey
-
-echo "Jira connected successfully" >&2
+echo 'Jira connected successfully' >&2
 

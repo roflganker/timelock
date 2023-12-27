@@ -2,28 +2,16 @@
 
 . ./common.sh
 
-if [ ! -f $stampfile ] || [ ! -s $stampfile ]; then
-  echo "Error: currently not working on anything" >&2;
-  return 1;
+if ! tl_is_working; then
+  fail 'Not working at the moment'
 fi
 
-subject="$(cat $subjfile)"
-starttime="$(cat $stampfile)"
+subject="$(cat "$(tl_subjfile)")"
+starttime="$(cat "$(tl_stampfile)")"
 curtime="$(date +%s)"
-timediff="$(expr $curtime - $starttime)"
-humantime="$(seconds_to_hms $timediff)"
 
-conf=""
-while [ -z "$conf" ]; do
-  echo -n "Erase work on $subject for $humantime? Y/N " >&2
-  read conf
-  if [ "$conf" = "N" ] || [ "$conf" = "n" ]; then
-    echo "Ok. Rolling back" >&2
-    return 1
-  fi
-done
+comfirm "Erase work on $subject for $(format_timediff "$starttime" "$curtime")?"
 
-rm $stampfile
-rm $subjfile
-echo "Erased." >&2
+rm -f "$(tl_subjfile)" "$(tl_stampfile)"
+echo "Done. Work entry has been erased" >&2
 

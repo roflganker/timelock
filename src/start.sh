@@ -2,23 +2,18 @@
 
 . ./common.sh
 
-if [ -f $stampfile ] && [ -s $stampfile ]; then
-  oldsubj="$(cat $subjfile)";
-  oldstamp="$(cat $stampfile)";
-  olddate="$(date --date=@$oldstamp)"
-  
-  echo "Error: already working on $oldsubj since $olddate" >&2;
-  return 1;
+if tl_is_working; then
+  subject="$(cat "$(tl_subjfile)")"
+  starttime="$(cat "$(tl_stampfile)")"
+  startdate="$(date --date=@"$starttime")"
+
+  fail "Already working on $subject since $startdate"
 fi
 
 timestamp="$(date +%s)"
-subject=""
-while [ -z "$subject" ]; do
-  echo -n "What are you working on? " >&2;
-  read subject;
-done
+subject="$(ask_line 'What are you working on?')"
 
-echo $timestamp > $stampfile
-echo $subject > $subjfile
-echo "You started working on $subject" >&2;
+echo "$timestamp" > "$(tl_stampfile)"
+echo "$subject" > "$(tl_subjfile)"
+echo "You started working on $subject" >&2
 

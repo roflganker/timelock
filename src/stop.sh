@@ -2,21 +2,17 @@
 
 . ./common.sh
 
-if [ ! -f $stampfile ] || [ ! -s $stampfile ]; then
-  echo "Error: currently not working on anything" >&2;
-  return 1;
+if ! tl_is_working; then
+  fail 'Not working at the moment';
 fi
 
-subject="$(cat $subjfile)"
-starttime="$(cat $stampfile)"
+subject="$(cat "$(tl_subjfile)")"
+starttime="$(cat "$(tl_stampfile)")"
 curtime="$(date +%s)"
-timediff="$(expr $curtime - $starttime)"
-humantime="$(seconds_to_hms $timediff)"
+timediff="$(( curtime - starttime ))"
+humantime="$(format_seconds "$timediff")"
 
-echo "You worked on $subject for $humantime" >&2;
-rm $stampfile
-rm $subjfile
-
-histentry="$starttime $curtime $subject"
-echo "$histentry" >> $histfile
+rm -f "$(tl_subjfile)" "$(tl_stampfile)"
+echo "$starttime $curtime $subject" >> "$(tl_histfile)"
+echo "You worked on $subject for $humantime" >&2
 

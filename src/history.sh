@@ -2,24 +2,19 @@
 
 . ./common.sh
 
-humanize_history() {
-  local starttime;
-  local endtime;
-  local subject;
-
-  while IFS=' ' read starttime endtime subject; do
-    startdate="$(date --date=@$starttime)";
-    timediff="$(expr $endtime - $starttime)";
-    humantime="$(seconds_to_hms $timediff)";
+display_history() (
+  while IFS=' ' read -r starttime endtime subject; do
+    startdate="$(date --date=@"$starttime")"
+    humantime="$(format_timediff "$starttime" "$endtime")"
     
     echo "$startdate: $subject ($humantime)"
   done
-}
+)
 
-if [ ! -f $histfile ] || [ ! -r $histfile ] || [ ! -s $histfile ]; then
-  echo "You have no history yet" >&2;
-  return 1;
+histfile="$(tl_histfile)";
+if [ ! -f "$histfile" ] || [ ! -r "$histfile" ] || [ ! -s "$histfile" ]; then
+  fail 'You have no history yet'
 fi
 
-humanize_history < $histfile
+display_history < "$histfile"
 

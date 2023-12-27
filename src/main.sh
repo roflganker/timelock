@@ -12,7 +12,7 @@ if [ "$option" = "common" ] || [ "$option" = "main" ]; then
   option=$fallback
 fi
 
-cd $(dirname $(readlink -f $0))
+cd "$(dirname "$(readlink -f "$0")")" || return 1
 script="./${option}.sh"
 if [ ! -f "$script" ]; then
   echo "Error: no such option '$option'" >&2

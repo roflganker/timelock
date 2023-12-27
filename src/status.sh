@@ -1,15 +1,15 @@
 #!/bin/sh
 
-. ./common.sh
+. common.sh
 
-if [ -f $stampfile ] && [ -s $stampfile ]; then
-  subject="$(cat $subjfile)";
-  starttime="$(cat $stampfile)";
-  curtime="$(date +%s)";
-  timediff="$(expr $curtime - $starttime)"
-
-  echo "Working on $subject for $(seconds_to_hms $timediff)" >&2;  
-else
-  echo "Not working at the moment" >&2;
+if ! tl_is_working; then
+  echo "Not working on anything"
+  return 0
 fi
+
+subject="$(cat "$(tl_subjfile)")"
+starttime="$(cat "$(tl_stampfile)")"
+curtime="$(date +%s)"
+
+echo "Working on $subject for $(format_timediff "$starttime" "$curtime")"  
 

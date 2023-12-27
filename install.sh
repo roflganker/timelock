@@ -23,25 +23,25 @@ while getopts ':x:f' opt; do
   esac
 done
 
-found="$(which $executable)"
+found="$(which "$executable")"
 if [ -n "$found" ] && [ -f "$found" ] && [ -x "$found" ]; then
   while [ "$forceinstall" != "y" ]; do
-    echo -n "Already installed at $found. Reinstall? y/n "
-    read forceinstall
+    printf "Already installed at %s. Reinstall? y/n " "$found"
+    read -r forceinstall
     [ "$forceinstall" = "n" ] && abort "Ok. Aborting" 
   done
 fi
 
-scriptdir=$(dirname $(readlink -f $0))
+scriptdir="$(dirname "$(readlink -f "$0")")"
 srcdir="$scriptdir/src"
 dist="/usr/src/timelock"
-[ -d $dist ] && rm -rf $dist
+[ -d "$dist" ] && rm -rf "$dist"
 
-mkdir $dist 
-cp -r $srcdir/* $dist
-entrypoint=$dist/main.sh
-chmod +x $entrypoint
+mkdir "$dist"
+cp -r $srcdir/* "$dist"
+entrypoint="$dist/main.sh"
+chmod +x "$entrypoint"
 linkname="/usr/local/bin/$executable"
-ln -fs $entrypoint $linkname
+ln -fs "$entrypoint" "$linkname"
 echo "Done. Linked to $linkname" >&2
 
