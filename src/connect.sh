@@ -2,6 +2,21 @@
 
 . ./common.sh
 
+jiradir=$homedir/jira
+if [ -d $jiradir ]; then
+  reinstall="n"
+  while [ "$reinstall" != "y" ]; do
+    echo -n "Jira is connected already. Reinstall? y/n "
+    read reinstall;
+    if [ "$reinstall" = "n" ]; then
+      echo "Ok. Aborting" >&2
+      return 1
+    fi
+  done
+  rm -rf $jiradir
+  echo "Old Jira connection was erased" >&2
+fi
+
 baseurl=""
 email=""
 apikey=""
@@ -24,5 +39,12 @@ while [ -z "$apikey" ]; do
   stty $oldstty
 done
 
-# TODO persit things
+mkdir $jiradir
+echo $baseurl > $jiradir/baseurl
+echo $email > $jiradir/email
+echo $apikey > $jiradir/apikey
+
+chmod 600 $jiradir/apikey
+
+echo "Jira connected successfully" >&2
 
