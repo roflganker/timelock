@@ -11,5 +11,4 @@ subject="$(cat "$(tl_subjfile)")"
 starttime="$(cat "$(tl_stampfile)")"
 curtime="$(date +%s)"
 
-echo "Working on $subject for $(format_timediff "$starttime" "$curtime")"  
-
+echo "Working on $subject for $(format_timediff "$starttime" "$curtime")"

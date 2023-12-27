@@ -2,7 +2,7 @@
 
 if [ "$(id -u)" != "0" ]; then
   echo "Please run this script as root user" >&2
-  which sudo > /dev/null && echo "Example: sudo $0" >&2
+  which sudo >/dev/null && echo "Example: sudo $0" >&2
 
   return 1
 fi
@@ -28,7 +28,7 @@ if [ -n "$found" ] && [ -f "$found" ] && [ -x "$found" ]; then
   while [ "$forceinstall" != "y" ]; do
     printf "Already installed at %s. Reinstall? y/n " "$found"
     read -r forceinstall
-    [ "$forceinstall" = "n" ] && abort "Ok. Aborting" 
+    [ "$forceinstall" = "n" ] && abort "Ok. Aborting"
   done
 fi
 
@@ -44,4 +44,3 @@ chmod +x "$entrypoint"
 linkname="/usr/local/bin/$executable"
 ln -fs "$entrypoint" "$linkname"
 echo "Done. Linked to $linkname" >&2
-

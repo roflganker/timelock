@@ -13,7 +13,6 @@ fi
 timestamp="$(date +%s)"
 subject="$(ask_line 'What are you working on?')"
 
-echo "$timestamp" > "$(tl_stampfile)"
-echo "$subject" > "$(tl_subjfile)"
+echo "$timestamp" >"$(tl_stampfile)"
+echo "$subject" >"$(tl_subjfile)"
 echo "You started working on $subject" >&2
-

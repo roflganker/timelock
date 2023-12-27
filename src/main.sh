@@ -22,9 +22,8 @@ fi
 
 if [ ! -s "$script" ] || [ ! -x "$script" ]; then
   echo "Installation error. Please, reinstall the utility" >&2
-  return 1;
+  return 1
 fi
 
 shift
 $script "$@"
-

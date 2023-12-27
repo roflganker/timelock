@@ -15,10 +15,9 @@ if [ -d "$jiradir" ]; then
 fi
 
 mkdir "$jiradir"
-ask_line 'Who are you? (email on Altassian)' > "$jiradir/email"
-ask_line 'Base URL of your Jira instance?' > "$jiradir/baseurl"
-ask_secret 'Your personal API token?' > "$jiradir/apikey"
+ask_line 'Who are you? (email on Altassian)' >"$jiradir/email"
+ask_line 'Base URL of your Jira instance?' >"$jiradir/baseurl"
+ask_secret 'Your personal API token?' >"$jiradir/apikey"
 chmod 600 "$jiradir/apikey"
 
 echo 'Jira connected successfully' >&2
-
