@@ -7,5 +7,5 @@ if ! which shellcheck >/dev/null 2>/dev/null; then
   exit 1
 fi
 
-shellcheck ./src/*.sh
+shellcheck ./src/*.sh ./src/*.bash
 

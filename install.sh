@@ -38,9 +38,12 @@ dist="/usr/src/timelock"
 [ -d "$dist" ] && rm -rf "$dist"
 
 mkdir "$dist"
-cp -r $srcdir/* "$dist"
-entrypoint="$dist/main.sh"
-chmod +x "$entrypoint"
-linkname="/usr/local/bin/$executable"
-ln -fs "$entrypoint" "$linkname"
-echo "Done. Linked to $linkname" >&2
+cp -r "$srcdir"/* "$dist"
+chmod +rx "$dist"/*.sh
+ln -fs "$dist/main.sh" "/usr/local/bin/$executable"
+
+bash_compl_dir="/usr/share/bash-completion/completions"
+if [ -d "$bash_compl_dir" ]; then
+  ln -fs "$dist/completion.bash" "$bash_compl_dir/$executable"
+fi
+

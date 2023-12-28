@@ -42,7 +42,6 @@ tl history -f week|today|yesterday|w|t|y  # Get filtered history
 - Compatibility tests for `bash`, `ash`, `zsh`, etc...
 - Integration with Jira
 - Use Makefile for linting and installation
-- Bash and maybe zsh completion
 
 ### Involved dev tools
 
