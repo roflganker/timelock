@@ -58,6 +58,12 @@ ask_line() (
   echo "$result"
 )
 
+ask_word() {
+  line="$(ask_line "$@")"
+  word="${line%% *}"
+  echo "$word"
+}
+
 ask_secret() (
   usage="ask_secret <prompt>"
 
@@ -70,6 +76,7 @@ ask_secret() (
     stty -echo
     read -r secret
     stty "$oldstty"
+    echo >&2
   done
   echo "$secret"
 )

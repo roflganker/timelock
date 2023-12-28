@@ -3,21 +3,26 @@
 . ./common.sh
 
 jiradir="$(tl_homedir)/jira"
-if [ -d "$jiradir" ]; then
-  if [ -f "$jiradir/email" ] && [ -r "$jiradir/email" ]; then
-    email="$(cat "$jiradir/email")"
-  else
-    email='no email'
-  fi
+emailfile="$jiradir/email"
+urlfile="$jiradir/baseurl"
+apikeyfile="$jiradir/apikey"
 
-  confirm "Jira is connected already ($email). Reinstall?"
-  rm -rf "$jiradir"
+if [ -d "$jiradir" ]; then
+  oldemail="$(cat "$emailfile" 2>/dev/null || true)"
+  oldurl="$(cat "$urlfile" 2>/dev/null || true)"
+
+  confirm "Jira is connected already (${oldemail:-'no email'}). Reinstall?"
 fi
 
-mkdir "$jiradir"
-ask_line 'Who are you? (email on Altassian)' >"$jiradir/email"
-ask_line 'Base URL of your Jira instance?' >"$jiradir/baseurl"
-ask_secret 'Your personal API token?' >"$jiradir/apikey"
+email="$(ask_word 'Who are you? (email on Altassian)' "$oldemail")"
+baseurl="$(ask_word 'Base URL of your Jira instance?' "$oldurl")"
+apikey="$(ask_secret 'Your personal API token?')"
+
+[ -d "$jiradir" ] || mkdir "$jiradir"
+echo "$email" >"$emailfile"
+echo "$baseurl" >"$urlfile"
+echo "$apikey" >"$apikeyfile"
+
 chmod 600 "$jiradir/apikey"
 
 echo 'Jira connected successfully' >&2
