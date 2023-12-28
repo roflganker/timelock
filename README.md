@@ -31,13 +31,13 @@ tl status  # Get currect work status
 tl stop  # Stop working and track time
 tl drop  # Erase current work unit
 tl rotate  # Track time and switch to another task
-tl history  # Get history (for now, use grep for filtering)
+tl history  # Get all history
+tl history -f week|today|yesterday|w|t|y  # Get filtered history
 ```
 
 
 ## TODO
 
-- History filters
 - Unit/e2e test coverage
 - Compatibility tests for `bash`, `ash`, `zsh`, etc...
 - Integration with Jira

@@ -13,8 +13,7 @@ tl_subjfile() { echo "$homedir/subj"; }
 tl_histfile() { echo "$homedir/history"; }
 
 tl_is_working() {
-  test -f "$(tl_stampfile)"
-  test -s "$(tl_stampfile)"
+  test -f "$(tl_stampfile)" && test -s "$(tl_stampfile)"
 }
 
 fail() {

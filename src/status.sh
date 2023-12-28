@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. common.sh
+. ./common.sh
 
 if ! tl_is_working; then
   echo "Not working on anything"
