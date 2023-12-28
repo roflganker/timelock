@@ -40,12 +40,20 @@ ask_line() (
   usage="ask_line <prompt>"
 
   prompt="$1"
+  default="$2"
   if [ -z "$prompt" ]; then fail "Missing prompt. Usage: $usage"; fi
 
   result=""
   while [ -z "$result" ]; do
-    printf "%s " "$prompt" >&2
+    if [ -n "$default" ]; then
+      printf "%s (%s) " "$prompt" "$default" >&2
+    else
+      printf "%s " "$prompt" >&2
+    fi
     read -r result
+    if [ -z "$result" ] && [ -n "$default" ]; then
+      result="$default"
+    fi
   done
   echo "$result"
 )

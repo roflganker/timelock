@@ -4,6 +4,7 @@ Usage: tl <option> [args]
   tl stop - stop working unit and track time
   tl drop - dismiss current work; forget timestamp
   tl rotate - track time and switch task
+  tl change - change current work subject
   tl history - get work history
   tl connect - connect Jira
 
