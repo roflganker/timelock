@@ -11,7 +11,7 @@ if [ -d "$jiradir" ]; then
   oldemail="$(cat "$emailfile" 2>/dev/null || true)"
   oldurl="$(cat "$urlfile" 2>/dev/null || true)"
 
-  confirm "Jira is connected already (${oldemail:-'no email'}). Reinstall?"
+  ask_confirm "Jira is connected already (${oldemail:-'no email'}). Reinstall?"
 fi
 
 email="$(ask_word 'Who are you? (email on Altassian)' "$oldemail")"

@@ -21,8 +21,7 @@ fail() {
   return 1
 }
 
-# Ask confirmation from user
-confirm() (
+ask_confirm() (
   prompt="$1"
   if [ -z "$prompt" ]; then prompt='Are you sure?'; fi
 
