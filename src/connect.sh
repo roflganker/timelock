@@ -6,6 +6,7 @@ jiradir="$(tl_homedir)/jira"
 emailfile="$jiradir/email"
 urlfile="$jiradir/baseurl"
 apikeyfile="$jiradir/apikey"
+commitfile="$jiradir/committed"
 
 if [ -d "$jiradir" ]; then
   oldemail="$(cat "$emailfile" 2>/dev/null || true)"
@@ -22,6 +23,7 @@ apikey="$(ask_secret 'Your personal API token?')"
 echo "$email" >"$emailfile"
 echo "$baseurl" >"$urlfile"
 echo "$apikey" >"$apikeyfile"
+touch "$commitfile"
 
 chmod 600 "$jiradir/apikey"
 

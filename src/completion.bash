@@ -13,4 +13,3 @@ options=(
 )
 
 complete -W "${options[*]}" tl
-
