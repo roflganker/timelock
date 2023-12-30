@@ -46,4 +46,3 @@ bash_compl_dir="/usr/share/bash-completion/completions"
 if [ -d "$bash_compl_dir" ]; then
   ln -fs "$dist/completion.bash" "$bash_compl_dir/$executable"
 fi
-
