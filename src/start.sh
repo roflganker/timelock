@@ -3,17 +3,18 @@
 test -n "$LIB_ASK_SOURCED" || . ./lib/ask.sh
 test -n "$LIB_TL_SOURCED" || . ./lib/tl.sh
 
-if tl_is_working; then
-  subject="$(cat "$(lib_tl_subject_file)")"
-  starttime="$(cat "$(lib_tl_time_file)")"
+if lib_tl_get_is_working; then
+  subject="$(lib_tl get subject)"
+  starttime="$(lib_tl get time)"
   startdate="$(date --date=@"$starttime")"
 
-  fail "Already working on $subject since $startdate"
+  echo "Already working on $subject since $startdate" >&2
+  return 1
 fi
 
-timestamp="$(date +%s)"
-subject="$(ask_line 'What are you working on?')"
+start_time="$(date +%s)"
+subject="$(lib_ask_line 'What are you working on?')"
 
-echo "$timestamp" >"$(tl_stampfile)"
-echo "$subject" >"$(tl_subjfile)"
+lib_tl write time "$start_time"
+lib_tl write subject "$subject"
 echo "You started working on $subject" >&2

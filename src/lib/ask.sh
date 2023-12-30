@@ -1,7 +1,10 @@
 #!/bin/sh
 
 # Duplicate sourcing guard
-test -z "$LIB_ASK_SOURCED" || { echo "Duplication lib ask" >&2; return 1; }
+test -z "$LIB_ASK_SOURCED" || {
+  echo "Duplication lib ask" >&2
+  return 1
+}
 
 # Interactively ask confirmation (y/n) from user
 lib_ask_confirm() (
@@ -13,7 +16,7 @@ lib_ask_confirm() (
     printf "%s y/n " "$prompt" >&2
     read -r answer
     if [ "$answer" = "n" ]; then
-      
+
       echo 'You refused it' >&2
       return 1
     fi
@@ -56,7 +59,7 @@ lib_ask_word() {
 # Interactively ask secret from a user
 lib_ask_secret() (
   usage="lib_ask_secret <prompt>"
-  
+
   prompt="$1"
   test -n "$prompt" || echo "Missing prompt. Usage: $usage" >&2 && return 1
 
@@ -72,4 +75,3 @@ lib_ask_secret() (
 )
 
 LIB_ASK_SOURCED="1"
-

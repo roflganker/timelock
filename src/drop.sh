@@ -3,18 +3,23 @@
 set -e
 test -n "$LIB_ASK_SOURCED" || . ./lib/ask.sh
 test -n "$LIB_TL_SOURCED" || . ./lib/tl.sh
-test -n "$LIB_DATE_SOURCED" || . ./lib/date/sh
+test -n "$LIB_DATE_SOURCED" || . ./lib/date.sh
 
-if ! lib_tl_is_working; then
+if ! lib_tl_get_is_working; then
   echo 'Not working at the moment' >&2
   return 1
 fi
 
-subject="$(cat "$(lib_tl_subject_file)")"
-start_time="$(cat "$(lib_tl_time_file)")"
-human_time="$(lib_date_range_to_hms "$start_time" "$(date +%s)")"
+subject="$(lib_tl get subject)"
+start_time="$(lib_tl get time)"
+cur_time="$(date +%s)"
+human_time="$(lib_date_sec_to_hms $((cur_time - start_time)))"
 
-lib_ask_confirm "Drop work entry on $subject for $human_time?" 
+lib_ask_confirm "Drop work entry on $subject for $human_time?"
 
-rm -f "$(lib_tl_subject_file)" "$(lib_tl_time_file)"
-echo "Done. Work entry has been dropped" >&2
+if lib_tl drop time && lib_tl drop subject; then
+  echo "Done. Work entry has been dropped" >&2
+else
+  echo "Something went wrong" >&2
+  return 1
+fi

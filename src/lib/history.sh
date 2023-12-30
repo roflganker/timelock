@@ -1,22 +1,21 @@
 #!/bin/sh
 
-# Complain and abort if already sourced
-test -z "$LIB_HISTORY_SOURCED" || { echo 'Dupl lib history' >&2; return 1; }
+test -z "$LIB_HISTORY_SOURCED" || echo "Lib history duplication" >&2
 
 # Source dependent libs if not sourced yet
 test -n "$LIB_TL_SOURCED" || . ./lib/tl.sh
 test -n "$LIB_DATE_SOURCED" || . ./lib/date.sh
 
+_lib_history_file="$(lib_tl_get_home_dir)/history"
 # Get file with timelock history
 lib_history_file() {
-  echo "$(lib_tl_homedir)/history"
+  echo "$_lib_history_file"
 }
 
 # Check whether Timelock has history
-lib_history_has_history() (
-  histfile="$(lib_history_file)"
-  test -f "$histfile" && test -s "$histfile"
-)
+lib_history_has_history() {
+  test -f "$_lib_history_file" -a -s "$_lib_history_file"
+}
 
 # Pretty print history entries from stdin
 lib_history_display() (
@@ -28,6 +27,20 @@ lib_history_display() (
   done
 )
 
+# Append a history entry
+lib_history_append() (
+  if [ -z "$1" ]; then echo "Missing start time" >&2 && return 1; fi
+  if [ -z "$2" ]; then echo "Missing end time" >&2 && return 1; fi
+  if [ -z "$3" ]; then echo "Missing message" >&2 && return 1; fi
+
+  echo "$1" "$2" "$3" >>"$_lib_history_file"
+)
+
+# List raw history entries
+lib_history_read() {
+  cat "$_lib_history_file"
+}
+
 # Filter history entries from stdin
 lib_history_filter() (
   usage="lib_history_filter <all|today|yesterday|week>"
@@ -37,35 +50,27 @@ lib_history_filter() (
   cur_min="$(date +%_H --date=@"$cur_time")"
   cur_sec="$(date +%_H --date=@"$cur_time")"
   cur_dom="$(date +%u --date=@"$cur_time")"
-  day_start=$((curtime - cur_hour * 3600 - cur_min * 60 - cur_sec))
+  day_start=$((cur_time - cur_hour * 3600 - cur_min * 60 - cur_sec))
   week_start=$((day_start - cur_dom * 86400 + 86400))
 
   min_time="0"
   max_time="$cur_time"
-  case "$filter" in
+  case "$1" in
     all) ;;
-    week) mintime="$week_start" ;;
-    today) mintime="$day_start" ;;
-    yesterday)
-      mintime=$((daystart - 86400))
-      maxtime="$daystart"
-      ;;
-    *)
-      echo "Unknown selector. Usage: $usage" >&2
-      return 1
-      ;;
+    week) min_time="$week_start" ;;
+    today) min_time="$day_start" ;;
+    yesterday) min_time=$((day_start - 86400)) && max_time="$day_start" ;;
+    *) echo "Unknown selector '$1'. Usage: $usage" >&2 && return 1 ;;
   esac
 
   while IFS=' ' read -r line; do
     start_time="${line%% *}"
-    if [ -n "$start_time" ]
-      && [ "$start_time" -gt "$min_time" ]
-      && [ "$start_time" -lt "$max_time" ]
-    then
+    if [ -n "$start_time" ] \
+      && [ "$start_time" -gt "$min_time" ] \
+      && [ "$start_time" -lt "$max_time" ]; then
       echo "$line"
     fi
   done
 )
 
 LIB_HISTORY_SOURCED="1"
-

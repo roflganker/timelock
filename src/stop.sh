@@ -1,17 +1,21 @@
 #!/bin/sh
 
-. ./common.sh
+set -e
+test -n "$LIB_TL_SOURCED" || . ./lib/tl.sh
+test -n "$LIB_DATE_SOURCED" || . ./lib/date.sh
+test -n "$LIB_HISTORY_SOURCED" || . ./lib/history.sh
 
-if ! tl_is_working; then
-  fail 'Not working at the moment'
+if ! lib_tl_get_is_working; then
+  echo 'Not working at the moment' >&2
+  return 1
 fi
 
-subject="$(cat "$(tl_subjfile)")"
-starttime="$(cat "$(tl_stampfile)")"
-curtime="$(date +%s)"
-timediff="$((curtime - starttime))"
-humantime="$(format_seconds "$timediff")"
+subject="$(lib_tl get subject)"
+start_time="$(lib_tl get time)"
+cur_time="$(date +%s)"
+human_time="$(lib_date_sec_to_hms $((cur_time - start_time)))"
+echo "You worked on $subject for $human_time" >&2
 
-rm -f "$(tl_subjfile)" "$(tl_stampfile)"
-echo "$starttime $curtime $subject" >>"$(tl_histfile)"
-echo "You worked on $subject for $humantime" >&2
+lib_tl drop time
+lib_tl drop subject
+lib_history_append "$start_time" "$cur_time" "$subject"

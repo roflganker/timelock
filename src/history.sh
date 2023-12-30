@@ -1,8 +1,10 @@
 #!/bin/sh
 
+set -e
 test -n "$LIB_HISTORY_SOURCED" || . ./lib/history.sh
 
-selector=""
+usage="tl history [-f a|w|t|y]"
+selector="all"
 while getopts ':f:' opt; do
   case "$opt" in
     f)
@@ -10,13 +12,11 @@ while getopts ':f:' opt; do
         a | all) selector="all" ;;
         w | week) selector="week" ;;
         t | today) selector="today" ;;
-        y | yestrtday) selector="yesterday" ;;
-        *) fail "Invalid selector '$OPTARG'. Possible values: a, w, t, y" ;;
+        y | yesterday) selector="yesterday" ;;
+        *) echo "Bad filter '$OPTARG'. Usage: $usage" >&2 && return 1 ;;
       esac
       ;;
-    ?)
-      fail "Invalid option: -${OPTARG}"
-      ;;
+    *) ;;
   esac
 done
 
@@ -25,7 +25,4 @@ if ! lib_history_has_history; then
   return 1
 fi
 
-cat "$(lib_history_file)" \
-  | lib_history_filter "$selector" \
-  | lib_history_display
-
+lib_history_read | lib_history_filter "$selector" | lib_history_display

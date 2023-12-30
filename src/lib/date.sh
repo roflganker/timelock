@@ -1,6 +1,6 @@
 #!/bin/sh
 
-test -z "$LIB_DATE_SOURCED" || { echo "Duplication lib date" >&2; return 1; }
+test -z "$LIB_DATE_SOURCED" || echo "Lib date suplication" >&2
 
 # Convert seconds to [h [m]] s
 lib_date_sec_to_hms() (
@@ -32,16 +32,15 @@ lib_date_sec_to_hms() (
 )
 
 # Convert UNIX timestamp to human representation
-lib_date_sec_to_human() {
-  echo 'Not implemented' >&2;
-  return 1;
+lib_date_unix_to_human() {
+  echo 'Not implemented' >&2
+  return 1
 }
 
 # Convert UNIX timestamp to ISO date
-lib_date_sec_to_iso() {
-  echo 'Not implemented' >&2;
-  return 1;
+lib_date_unix_to_iso() {
+  echo 'Not implemented' >&2
+  return 1
 }
 
 LIB_DATE_SOURCED="1"
-

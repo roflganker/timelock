@@ -5,11 +5,11 @@ test -n "$LIB_TL_SOURCED" || . ./lib/tl.sh
 test -n "$LIB_ASK_SOURCED" || . ./lib/ask.sh
 
 jira_dir="$(lib_tl_homedir)/jira"
-email_file="$jiradir/email"
-url_file="$jiradir/baseurl"
-apikey_file="$jiradir/apikey"
+email_file="$jira_dir/email"
+url_file="$jira_dir/baseurl"
+apikey_file="$jira_dir/apikey"
 
-if [ -d "$jiradir" ]; then
+if [ -d "$jira_dir" ]; then
   old_email="$(cat "$email_file" 2>/dev/null || true)"
   old_url="$(cat "$url_file" 2>/dev/null || true)"
 

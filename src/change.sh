@@ -1,22 +1,23 @@
 #!/bin/sh
 
-set -e
-test -n "$LIB_ASK_IMPORTED" || . ./lib/ask.sh
-test -n "$LIB_TL_IMPORTED" || ./lib/tl.sh
+test -n "$LIB_ASK_SOURCED" || . ./lib/ask.sh
+test -n "$LIB_TL_SOURCED" || . ./lib/tl.sh
 
-if ! lib_tl_is_working; then
+if ! lib_tl_get_is_working; then
   echo 'Not working at the moment, nothing to change' >&2
   return 1
 fi
 
-subject_file="$(lib_tl_subject_file)"
-old_subject="$(cat "$subject_file")"
-new_subject="$(lib_ask_line 'What are you working on?' "$oldsubject")"
-if [ "$newsubject" != "$oldsubject" ]; then
-   echo 'Nothing changed' >&2
-   return 1
+old_subject="$(lib_tl get subject)"
+new_subject="$(lib_ask_line 'What are you working on?' "$old_subject")"
+if [ "$new_subject" = "$old_subject" ]; then
+  echo 'Nothing changed' >&2
+  return 1
 fi
 
-echo "$new_subject" >"$subject_file"
-echo "Ok, now working on $new_subject" >&2
-
+if lib_tl write subject "$new_subject"; then
+  echo "Ok, now working on $new_subject" >&2
+else
+  echo "Failed to change" >&2
+  return 1
+fi
