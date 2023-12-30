@@ -1,10 +1,11 @@
 #!/bin/sh
 
-. ./common.sh
+test -n "$LIB_ASK_SOURCED" || . ./lib/ask.sh
+test -n "$LIB_TL_SOURCED" || . ./lib/tl.sh
 
 if tl_is_working; then
-  subject="$(cat "$(tl_subjfile)")"
-  starttime="$(cat "$(tl_stampfile)")"
+  subject="$(cat "$(lib_tl_subject_file)")"
+  starttime="$(cat "$(lib_tl_time_file)")"
   startdate="$(date --date=@"$starttime")"
 
   fail "Already working on $subject since $startdate"

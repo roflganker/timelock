@@ -1,16 +1,17 @@
 #!/bin/sh
 
-. ./common.sh
+test -n "$LIB_HISTORY_SOURCED" || . ./lib/history.sh
 
-filter=""
+selector=""
 while getopts ':f:' opt; do
   case "$opt" in
     f)
       case "$OPTARG" in
-        w | week) filter="week" ;;
-        t | td | today) filter="today" ;;
-        y | yd | yestrtday) filter="yesterday" ;;
-        *) fail "Invalid filter '$OPTARG'. Usage: -f t|y|w" ;;
+        a | all) selector="all" ;;
+        w | week) selector="week" ;;
+        t | today) selector="today" ;;
+        y | yestrtday) selector="yesterday" ;;
+        *) fail "Invalid selector '$OPTARG'. Possible values: a, w, t, y" ;;
       esac
       ;;
     ?)
@@ -19,42 +20,12 @@ while getopts ':f:' opt; do
   esac
 done
 
-filter_history() (
-  curtime="$(date +%s)"
-  daystart=$((curtime - $(date +%_H) * 3600 - $(date +%_M) * 60 - $(date +%_S)))
-  weekstart=$((daystart - $(date +%u) * 86400 + 86400))
-
-  mintime="0"
-  maxtime="$curtime"
-  case "$filter" in
-    week) mintime="$weekstart" ;;
-    today) mintime="$daystart" ;;
-    yesterday)
-      mintime=$((daystart - 86400))
-      maxtime="$daystart"
-      ;;
-  esac
-
-  while IFS=' ' read -r line; do
-    starttime="${line%% *}"
-    if [ "$starttime" -gt "$mintime" ] && [ "$starttime" -lt "$maxtime" ]; then
-      echo "$line"
-    fi
-  done
-)
-
-display_history() (
-  while IFS=' ' read -r starttime endtime subject; do
-    startdate="$(date --date=@"$starttime")"
-    humantime="$(format_timediff "$starttime" "$endtime")"
-
-    echo "$startdate: $subject ($humantime)"
-  done
-)
-
-histfile="$(tl_histfile)"
-if [ ! -f "$histfile" ] || [ ! -r "$histfile" ] || [ ! -s "$histfile" ]; then
-  fail 'You have no history yet'
+if ! lib_history_has_history; then
+  echo "You have no history yet" >&2
+  return 1
 fi
 
-filter_history <"$histfile" | display_history
+cat "$(lib_history_file)" \
+  | lib_history_filter "$selector" \
+  | lib_history_display
+

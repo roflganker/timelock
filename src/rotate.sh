@@ -1,5 +1,4 @@
 #!/bin/sh
 
-set -e
-./stop.sh
-./start.sh
+./stop.sh && ./start.sh
+
