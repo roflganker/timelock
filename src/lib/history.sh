@@ -41,6 +41,10 @@ lib_history_read() {
   cat "$_lib_history_file"
 }
 
+lib_history_read_last() {
+  tail -n 1 "$_lib_history_file"
+}
+
 # Filter history entries from stdin
 lib_history_filter() (
   usage="lib_history_filter <all|today|yesterday|week>"

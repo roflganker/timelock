@@ -5,6 +5,14 @@ test -n "$LIB_TL_SOURCED" || . ./lib/tl.sh
 test -n "$LIB_DATE_SOURCED" || . ./lib/date.sh
 test -n "$LIB_HISTORY_SOURCED" || . ./lib/history.sh
 
+do_commit=""
+while getopts ':c' opt; do
+  case "$opt" in
+    c) do_commit="1" ;;
+    *) ;;
+  esac
+done
+
 if ! lib_tl_get_is_working; then
   echo 'Not working at the moment' >&2
   return 1
@@ -19,3 +27,7 @@ echo "You worked on $subject for $human_time" >&2
 lib_tl drop time
 lib_tl drop subject
 lib_history_append "$start_time" "$cur_time" "$subject"
+
+if [ -n "$do_commit" ]; then
+  ./commit.sh
+fi
