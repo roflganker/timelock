@@ -9,7 +9,7 @@ test -n "$LIB_JIRA_SOURCED" || . ./lib/jira.sh
 test -n "$LIB_HISTORY_SOURCED" || . ./lib/history.sh
 
 if ! lib_jira_is_connected; then
-  echo 'You havent connected jira. Please run timelock connect' >&2
+  echo 'You havent connected jira. Please run tl connect' >&2
   return 1
 fi
 
@@ -21,6 +21,11 @@ fi
 IFS=' ' read -r work_start work_end work_subject <<EOL123
   $(lib_history_read_last)
 EOL123
+
+if lib_jira_is_worklogged "$work_start"; then
+  echo "Work was already sent to Jira" >&2
+  return 1
+fi
 
 guessed_issue="${work_subject%% *}"
 guessed_comment="${work_subject#* }"
