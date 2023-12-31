@@ -10,6 +10,7 @@ options=(
   history
   help
   connect
+  commit
 )
 
 complete -W "${options[*]}" tl
