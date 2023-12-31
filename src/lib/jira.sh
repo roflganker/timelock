@@ -59,8 +59,8 @@ lib_jira_add_worklog() (
   work_comment="$4"
   if [ -z "$jira_issue" ]; then fail "Missing issue. Usage: $usage"; fi
   if [ -z "$start_time" ]; then fail "Missing start time. Usage: $usage"; fi
-  if [ "$start_time" -lt "60" ]; then start_time="60"; fi
   if [ -z "$work_seconds" ]; then fail "Missing work time. Usage: $usage"; fi
+  if [ "$work_seconds" -lt "60" ]; then work_seconds="60"; fi
 
   if ! lib_jira_is_connected; then fail "Jira not connected"; fi
   jira_url="$(cat "$_lib_jira_url_file")"

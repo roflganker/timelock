@@ -7,6 +7,6 @@ Usage: tl <option> [args]
   tl change - change current work subject
   tl history - get work history
   tl connect - connect Jira
-
+  tl commit - send last work entry to Jira
   tl help - get help message
-  tl help <command> - get help on certain command
+
