@@ -1,8 +1,9 @@
 #!/bin/sh
 
-test -z "$LIB_DATE_SOURCED" || echo "Lib date suplication" >&2
+# Complain if library was sourced already
+test -z "$LIB_DATE_SOURCED" || echo "Lib date duplication" >&2
 
-# Convert seconds to [h [m]] s
+# Convert seconds to %Hh %Mm %Ss
 lib_date_sec_to_hms() (
   usage="lib_date_sec_to_hms <seconds>"
 
@@ -30,17 +31,5 @@ lib_date_sec_to_hms() (
     echo "${seconds}s"
   fi
 )
-
-# Convert UNIX timestamp to human representation
-lib_date_unix_to_human() {
-  echo 'Not implemented' >&2
-  return 1
-}
-
-# Convert UNIX timestamp to ISO date
-lib_date_unix_to_iso() {
-  echo 'Not implemented' >&2
-  return 1
-}
 
 LIB_DATE_SOURCED="1"

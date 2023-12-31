@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# Complain if the library was sourced already
 test -z "$LIB_HISTORY_SOURCED" || echo "Lib history duplication" >&2
 
 # Source dependent libs if not sourced yet
@@ -53,9 +54,9 @@ lib_history_filter() (
   cur_hour="$(date +%_H --date=@"$cur_time")"
   cur_min="$(date +%_H --date=@"$cur_time")"
   cur_sec="$(date +%_H --date=@"$cur_time")"
-  cur_dom="$(date +%u --date=@"$cur_time")"
+  cur_dow="$(date +%u --date=@"$cur_time")"
   day_start=$((cur_time - cur_hour * 3600 - cur_min * 60 - cur_sec))
-  week_start=$((day_start - cur_dom * 86400 + 86400))
+  week_start=$((day_start - cur_dow * 86400 + 86400))
 
   min_time="0"
   max_time="$cur_time"
@@ -68,10 +69,8 @@ lib_history_filter() (
   esac
 
   while IFS=' ' read -r line; do
-    start_time="${line%% *}"
-    if [ -n "$start_time" ] \
-      && [ "$start_time" -gt "$min_time" ] \
-      && [ "$start_time" -lt "$max_time" ]; then
+    work_time="${line%% *}"
+    if [ "$work_time" -gt "$min_time" ] && [ "$work_time" -lt "$max_time" ]; then
       echo "$line"
     fi
   done
