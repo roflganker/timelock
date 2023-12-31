@@ -3,27 +3,36 @@
 # As example: commit -t => today, commit -y => yesterday
 
 set -e
-test -n "$LIB_ASK_SOURCED" && . ./lib/ask.sh
-test -n "$LIB_DATE_SOURCED" && . ./lib/date.sh
-test -n "$LIB_JIRA_SOURCED" && . ./lib/jira.sh
-test -n "$LIB_HISTORY_SOURCED" && . ./lib/history.sh
+test -n "$LIB_ASK_SOURCED" || . ./lib/ask.sh
+test -n "$LIB_DATE_SOURCED" || . ./lib/date.sh
+test -n "$LIB_JIRA_SOURCED" || . ./lib/jira.sh
+test -n "$LIB_HISTORY_SOURCED" || . ./lib/history.sh
+
+if ! lib_jira_is_connected; then
+  echo 'You havent connected jira. Please run timelock connect' >&2
+  return 1
+fi
 
 if ! lib_history_has_history; then
   echo 'You dont have timelock history yet' >&2
   return 1
 fi
 
-IFS=' ' read -r work_start work_end work_subject <<TL_EOL123
+IFS=' ' read -r work_start work_end work_subject <<EOL123
   $(lib_history_read_last)
-TL_EOL123
+EOL123
 
 guessed_issue="${work_subject%% *}"
 guessed_comment="${work_subject#* }"
-jira_issue="$(lib_ask_line 'Jira issue?' "$guessed_issue")"
-work_comment="$(lib_ask_line 'Worklog comment?' "$guessed_comment")"
+issue="$(lib_ask_word 'Jira issue?' "$guessed_issue")"
+comment="$(lib_ask_line 'Worklog comment?' "$guessed_comment")"
 work_seconds=$((work_end - work_start))
 work_humantime="$(lib_date_sec_to_hms "$work_seconds")"
 
-lib_ask_confirm "Track $work_humantime for $jira_issue?"
-
-echo "Successfully sent to jira" >&2
+lib_ask_confirm "Track $work_humantime for $issue?"
+if lib_jira_add_worklog "$issue" "$work_start" "$work_seconds" "$comment"; then
+  echo "Successfully sent to Jira" >&2
+else
+  echo "Sometning went wrong" >&2
+  return 1
+fi

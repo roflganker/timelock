@@ -51,7 +51,7 @@ lib_ask_line() (
 
 # Interactively ask a single word from user
 lib_ask_word() {
-  line="$(ask_line "$@")"
+  line="$(lib_ask_line "$@")"
   word="${line%% *}"
   echo "$word"
 }

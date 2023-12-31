@@ -1,9 +1,10 @@
 #!/bin/sh
 
 test -n "$LIB_TL_SOURCED" || . ./lib/tl.sh
+test -z "$LIB_JIRA_SOURCED" || echo "Duplication lib jira" >&2
 
 _lib_jira_home="$(lib_tl_get_home_dir)/jira"
-_lib_jira_url_file="$_lib_jira_home/baseurl"
+_lib_jira_url_file="$_lib_jira_home/url"
 _lib_jira_email_file="$_lib_jira_home/email"
 _lib_jira_apikey_file="$_lib_jira_home/apikey"
 
@@ -13,30 +14,30 @@ fail() {
 }
 
 lib_jira_is_connected() {
-  test -s "$_lib_jira_email_file" \
-    && test -s "$_lib_jira_url_file" \
-    && test -s "$_lib_jira_apikey_file"
+  test -s "$_lib_jira_email_file" -a \
+    -s "$_lib_jira_url_file" -a \
+    -s "$_lib_jira_apikey_file"
 }
 
 lib_jira_get_email() {
   cat "$_lib_jira_email_file"
 }
 
-lib_jira_get_baseurl() {
+lib_jira_get_url() {
   cat "$_lib_jira_url_file"
 }
 
 lib_jira_connect() (
-  usage="lib_jira_connect <baseurl> <email> <apikey>"
-  baseurl="$1"
+  usage="lib_jira_connect <url> <email> <apikey>"
+  url="$1"
   email="$2"
   apikey="$3"
-  if [ -z "$baseurl" ]; then fail "Missing baseurl. Usage: $usage"; fi
+  if [ -z "$url" ]; then fail "Missing url. Usage: $usage"; fi
   if [ -z "$email" ]; then fail "Missing email. Usage: $usage"; fi
   if [ -z "$apikey" ]; then fail "Missing apikey. Usage: $usage"; fi
 
   if [ ! -d "$_lib_jira_home" ]; then mkdir "$_lib_jira_home"; fi
-  echo "$baseurl" >"$_lib_jira_url_file"
+  echo "$url" >"$_lib_jira_url_file"
   echo "$email" >"$_lib_jira_email_file"
   echo "$apikey" >"$_lib_jira_apikey_file"
 
@@ -48,18 +49,21 @@ lib_jira_disconnect() {
   rm -rf "$_lib_jira_home"
 }
 
-lib_jira_add_worklog() {
+lib_jira_add_worklog() (
   usage="lib_jira_add_worklog <issue> <start time> <work seconds> <comment>"
+
+  set -e
   jira_issue="$1"
   start_time="$2"
   work_seconds="$3"
   work_comment="$4"
-  if [ -z "$issue" ]; then fail "Missing issue. Usage: $usage"; fi
+  if [ -z "$jira_issue" ]; then fail "Missing issue. Usage: $usage"; fi
   if [ -z "$start_time" ]; then fail "Missing start time. Usage: $usage"; fi
+  if [ "$start_time" -lt "60" ]; then start_time="60"; fi
   if [ -z "$work_seconds" ]; then fail "Missing work time. Usage: $usage"; fi
 
   if ! lib_jira_is_connected; then fail "Jira not connected"; fi
-  jira_baseurl="$(cat "$_lib_jira_url_file")"
+  jira_url="$(cat "$_lib_jira_url_file")"
   jira_email="$(cat "$_lib_jira_email_file")"
   jira_apikey="$(cat "$_lib_jira_apikey_file")"
   jira_start_date="$(date +"%Y-%m-%dT%H:%M:%S.000%z" --date=@"$start_time")"
@@ -70,13 +74,17 @@ lib_jira_add_worklog() {
 
   curl \
     --request POST \
-    --url "${jira_baseurl}/rest/api/2/issue/${jira_issue}/worklog" \
+    --fail \
+    --silent \
+    --url "${jira_url}/rest/api/2/issue/${jira_issue}/worklog" \
     --user "${jira_email}:${jira_apikey}" \
     --header 'Accept: application/json' \
     --header 'Content-Type: application/json' \
     --data "{
-      \"comment\": \"${work_comment}\",
-      \"started\": \"${jira_start_date}\",
-      \"timeSpentSeconds\": ${work_seconds}
-    }"
-}
+      \"comment\":\"${work_comment}\",
+      \"started\":\"${jira_start_date}\",
+      \"timeSpentSeconds\":${work_seconds}
+    }" >/dev/null
+)
+
+LIB_JIRA_SOURCED="1"

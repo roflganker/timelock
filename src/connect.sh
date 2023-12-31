@@ -4,7 +4,7 @@ set -e
 test -n "$LIB_ASK_SOURCED" || . ./lib/ask.sh
 test -n "$LIB_JIRA_SOURCED" || . ./lib/jira.sh
 
-if lib_jira_connected; then
+if lib_jira_is_connected; then
   old_email="$(lib_jira_get_email)"
   old_url="$(lib_jira_get_url)"
 
