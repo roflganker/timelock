@@ -6,7 +6,6 @@ options=(
   stop
   drop
   change
-  rotate
   history
   help
   connect

@@ -31,7 +31,6 @@ tl start  # Start working
 tl status  # Get currect work status  
 tl stop  # Stop working and track time
 tl drop  # Erase current work unit
-tl rotate  # Track time and switch to another task
 
 # History
 tl history  # Get all history
@@ -40,8 +39,6 @@ tl history -f all|week|today|yesterday  # Get filtered history
 # Jira worklogs
 tl connect  # Connect with Jira
 tl commit  # Send last worklog to Jira
-tl stop -c  # All the same + send worklog to Jira
-tl rotate -c  # All the same + send worklog to Jira
 ```
 
 
