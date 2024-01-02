@@ -19,4 +19,3 @@ echo "You worked on $subject for $human_time" >&2
 lib_tl drop time
 lib_tl drop subject
 lib_history_append "$start_time" "$cur_time" "$subject"
-

@@ -47,7 +47,10 @@ tl commit  # Send last worklog to Jira
 - Unit/e2e test coverage
 - Compatibility tests for `bash`, `ash`, `zsh`, etc...
 - Use Makefile for linting and installation
-- Working time inside PS1
+- Print current time inside PS1
+- Batch commit (today, yesterday, week)
+- Granular help (`tl <option> -h`)
+- Enhanced completion (include options)
 
 
 ### Involved dev tools
