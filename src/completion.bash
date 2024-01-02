@@ -4,10 +4,8 @@ options=(
   start
   status
   stop
-  drop
   change
   history
-  help
   connect
   commit
 )

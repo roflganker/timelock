@@ -1,23 +1,38 @@
 #!/bin/sh
 
-option="$1"
-fallback="help"
-if [ -z "$option" ]; then
-  echo "Error: missing option" >&2
-  option=$fallback
+show_help() {
+  cat <<EOF
+Usage: tl <command> [options...]
+Run a command of Timelock CLI
+
+Possible commands are
+  start     start tracking time
+  status    get work status
+  change    change work (time-track) subject
+  stop      stop tracking time
+  history   show work history
+  connect   connect Jira
+  commit    send last tracked work to Jira worklogs
+
+Note: use 'tl <command> -h' to get help on certain command
+EOF
+}
+
+if [ -z "$1" ] \
+  || [ "$1" = "-h" ] \
+  || [ "$1" = "--help" ] \
+  || [ "$1" = "main" ] \
+  || [ "$1" = "help" ]; then
+  show_help
+  return 0
 fi
 
-if [ "$option" = "main" ]; then
-  echo "Error: invalid option '$option'" >&2
-  option=$fallback
-fi
-
+subcommand="$1"
 cd "$(dirname "$(readlink -f "$0")")" || return 1
-script="./${option}.sh"
+script="./${subcommand}.sh"
 if [ ! -f "$script" ]; then
-  echo "Error: no such option '$option'" >&2
-  option=$fallback
-  script="./${option}.sh"
+  echo "Error: no such timelock command '$subcommand'" >&2
+  return 1
 fi
 
 shift

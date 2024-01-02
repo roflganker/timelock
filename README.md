@@ -29,8 +29,8 @@ rm -rf timelock  # Remove source code (optionally)
 # Recording time
 tl start  # Start working
 tl status  # Get currect work status  
+tl change  # Change current work subject
 tl stop  # Stop working and track time
-tl drop  # Erase current work unit
 
 # History
 tl history  # Get all history
@@ -49,7 +49,6 @@ tl commit  # Send last worklog to Jira
 - Use Makefile for linting and installation
 - Print current time inside PS1
 - Batch commit (today, yesterday, week)
-- Granular help (`tl <option> -h`)
 - Enhanced completion (include options)
 
 
