@@ -7,7 +7,7 @@ I'm learning shell scripting and this is my pet project.
 Don't judge strictly :) Use these scripts on your own risk.
 
 
-# Rationale
+## Rationale
 
 This tool needed to track working hours without signing in with Google,
 X, or smth.. It also don't require Internet and frees you from interacting
