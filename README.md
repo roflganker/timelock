@@ -42,12 +42,29 @@ tl commit  # Send last worklog to Jira
 ```
 
 
+### Prompt
+
+You may wish to view your time in command brompt. Example using bash:
+
+```bash
+# ~/.bashrc
+
+tl_prompt() {
+  local hms 
+  if hms="$(tl status -u 2>/dev/null)"; then
+    echo "⏳[$hms]"
+  fi
+}
+
+PS1="\u@\h:\w\$(tl_prompt)$ "
+```
+
+
 ## TODO
 
 - Unit/e2e test coverage
 - Compatibility tests for `bash`, `ash`, `zsh`, etc...
 - Use Makefile for linting and installation
-- Print current time inside PS1
 - Batch commit (today, yesterday, week)
 - Enhanced completion (include options)
 
