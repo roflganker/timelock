@@ -74,6 +74,6 @@ fi
 if lib_jira_add_worklog "$issue" "$work_start" "$work_seconds" "$comment"; then
   echo "Successfully sent to Jira" >&2
 else
-  echo "Sometning went wrong" >&2
+  echo "Error!! Work wasn't logged. Check api token and your network" >&2
   return 1
 fi

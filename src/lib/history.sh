@@ -46,34 +46,4 @@ lib_history_read_last() {
   tail -n 1 "$_lib_history_file"
 }
 
-# Filter history entries from stdin
-lib_history_filter() (
-  usage="lib_history_filter <all|today|yesterday|week>"
-
-  cur_time="$(date +%s)"
-  cur_hour="$(date +%_H --date=@"$cur_time")"
-  cur_min="$(date +%_H --date=@"$cur_time")"
-  cur_sec="$(date +%_H --date=@"$cur_time")"
-  cur_dow="$(date +%u --date=@"$cur_time")"
-  day_start=$((cur_time - cur_hour * 3600 - cur_min * 60 - cur_sec))
-  week_start=$((day_start - cur_dow * 86400 + 86400))
-
-  min_time="0"
-  max_time="$cur_time"
-  case "$1" in
-    all) ;;
-    week) min_time="$week_start" ;;
-    today) min_time="$day_start" ;;
-    yesterday) min_time=$((day_start - 86400)) && max_time="$day_start" ;;
-    *) echo "Unknown selector '$1'. Usage: $usage" >&2 && return 1 ;;
-  esac
-
-  while IFS=' ' read -r line; do
-    work_time="${line%% *}"
-    if [ "$work_time" -gt "$min_time" ] && [ "$work_time" -lt "$max_time" ]; then
-      echo "$line"
-    fi
-  done
-)
-
 LIB_HISTORY_SOURCED="1"

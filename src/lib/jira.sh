@@ -104,7 +104,7 @@ lib_jira_add_worklog() (
   jira_apikey="$(cat "$_lib_jira_apikey_file")"
   jira_start_date="$(date +"%Y-%m-%dT%H:%M:%S.000%z" --date=@"$start_time")"
 
-  curl \
+  if curl \
     --request POST \
     --fail \
     --silent \
@@ -116,9 +116,12 @@ lib_jira_add_worklog() (
       \"comment\":\"${work_comment}\",
       \"started\":\"${jira_start_date}\",
       \"timeSpentSeconds\":${work_seconds}
-    }" >/dev/null
-
-  echo "$start_time" >>"$_lib_jira_worklog_file"
+    }" >/dev/null; then
+    echo "$start_time" >>"$_lib_jira_worklog_file"
+    return 0
+  else
+    return 1
+  fi
 )
 
 LIB_JIRA_SOURCED="1"
