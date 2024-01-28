@@ -65,8 +65,10 @@ PS1="\u@\h:\w\$(tl_prompt)$ "
 - Unit/e2e test coverage
 - Compatibility tests for `bash`, `ash`, `zsh`, etc...
 - Use Makefile for linting and installation
+- History cleaning
 - Batch commit (today, yesterday, week)
 - Enhanced completion (include options)
+- Project/workspace separation (separate history, status and Jira)
 
 
 ### Involved dev tools
