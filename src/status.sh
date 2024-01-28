@@ -23,7 +23,7 @@ EOF
 print_human_time="no"
 print_seconds="no"
 print_subject="no"
-while getopts ':hus' opt; do
+while getopts ':huts' opt; do
   case "$opt" in
     h) show_help && return 0 ;;
     u) print_human_time="yes" ;;
