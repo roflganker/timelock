@@ -69,6 +69,7 @@ PS1="\u@\h:\w\$(tl_prompt)$ "
 - Batch commit (today, yesterday, week)
 - Enhanced completion (include options)
 - Project/workspace separation (separate history, status and Jira)
+- Work time summaries (`tl summary -f <filter>`)
 
 
 ### Involved dev tools
