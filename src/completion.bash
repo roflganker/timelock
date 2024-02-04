@@ -8,6 +8,7 @@ options=(
   history
   connect
   commit
+  sync
 )
 
 complete -W "${options[*]}" tl
