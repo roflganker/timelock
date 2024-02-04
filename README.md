@@ -70,6 +70,7 @@ PS1="\u@\h:\w\$(tl_prompt)$ "
 - Enhanced completion (include options)
 - Project/workspace separation (separate history, status and Jira)
 - Work time summaries (`tl summary -f <filter>`)
+- Subject linkage (git commits, confluence pages, other)
 
 
 ### Involved dev tools
