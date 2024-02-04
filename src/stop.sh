@@ -44,7 +44,13 @@ human_time="$(lib_date_sec_to_hms $((cur_time - start_time)))"
 echo "You worked on $subject for $human_time" >&2
 
 if [ "$do_write_history" = "yes" ]; then
-  lib_history_append "$start_time" "$cur_time" "$subject"
+  if lib_tl has link; then
+    work_link="$(lib_tl get link)"
+  else
+    work_link=""
+  fi
+
+  lib_history_append "$start_time" "$cur_time" "$subject" "$work_link"
 else
   if [ "$do_confirm_forgetting" = "yes" ]; then
     lib_ask_confirm "Are you sure to erase your work?"
@@ -53,3 +59,4 @@ fi
 
 lib_tl drop time
 lib_tl drop subject
+lib_tl drop link

@@ -2,6 +2,7 @@
 
 options=(
   start
+  link
   status
   stop
   change

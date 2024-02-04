@@ -64,6 +64,11 @@ if [ -z "$comment" ]; then
   comment="$(lib_ask_line 'Worklog comment?' "$guessed_comment")"
 fi
 
+if lib_history_has_link "$work_start"; then
+  work_link="$(lib_history_get_link "$work_start")"
+  comment="$comment [link]($work_link)"
+fi
+
 work_seconds=$((work_end - work_start))
 work_humantime="$(lib_date_sec_to_hms "$work_seconds")"
 
@@ -74,6 +79,6 @@ fi
 if lib_jira_add_worklog "$issue" "$work_start" "$work_seconds" "$comment"; then
   echo "Successfully sent to Jira" >&2
 else
-  echo "Error!! Work wasn't logged. Check api token and your network" >&2
+  echo "Error!! Worklog wasn't sent. Check api token and your network" >&2
   return 1
 fi

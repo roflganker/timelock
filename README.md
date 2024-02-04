@@ -28,6 +28,7 @@ rm -rf timelock  # Remove source code (optionally)
 ```shell
 # Recording time
 tl start  # Start working
+tl link  # Assign a URL to your work
 tl status  # Get currect work status  
 tl change  # Change current work subject
 tl stop  # Stop working and track time
@@ -70,7 +71,6 @@ PS1="\u@\h:\w\$(tl_prompt)$ "
 - Enhanced completion (include options)
 - Project/workspace separation (separate history, status and Jira)
 - Work time summaries (`tl summary -f <filter>`)
-- Subject linkage (git commits, confluence pages, other)
 
 
 ### Involved dev tools

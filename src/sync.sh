@@ -66,7 +66,7 @@ lib_history_read | lib_filter_apply "$selector" | {
     guessed_comment="${work_subject#* }"
     comment="$(lib_ask_line 'Worklog comment?' "$guessed_comment")"
 
-    if [ "$do_ask_confirm" = true ]; then 
+    if [ "$do_ask_confirm" = true ]; then
       lib_ask_confirm "Track $work_humantime for $issue?"
     fi
 

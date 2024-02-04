@@ -19,19 +19,20 @@ lib_tl_get_is_working() (
 
 # Interact with timelock state
 lib_tl() (
-  usage="lib_tl <get|set|drop|has> <time|subject> [content]"
+  usage="lib_tl <get|set|drop|has> <time|subject|link> [content]"
 
   case "$2" in
     t | time) item_file="$_lib_tl_home/time" ;;
     s | subj | subject) item_file="$_lib_tl_home/subj" ;;
+    l | link) item_file="$_lib_tl_home/link" ;;
     *) echo "Invalid item '$2'. Usage: $usage" && return 1 ;;
   esac
 
   case "$1" in
-    g | get | cat | read) cat "$item_file" ;;
+    g | get | cat | read) cat "$item_file" 2>/dev/null ;;
     s | set | write) echo "$3" >"$item_file" ;;
     d | drop | rm) rm -f "$item_file" ;;
-    h | has)
+    h | has | check)
       test -f "$item_file" -a -s "$item_file"
       return "$?"
       ;;
