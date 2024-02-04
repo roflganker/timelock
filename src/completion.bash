@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 options=(
+  project
   start
   status
   stop
