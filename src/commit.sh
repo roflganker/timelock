@@ -66,7 +66,7 @@ fi
 
 if lib_history_has_link "$work_start"; then
   work_link="$(lib_history_get_link "$work_start")"
-  comment="$comment [link]($work_link)"
+  comment="$comment $work_link"
 fi
 
 work_seconds=$((work_end - work_start))
